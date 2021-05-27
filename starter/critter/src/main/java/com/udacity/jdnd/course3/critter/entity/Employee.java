@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.entity;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.hibernate.annotations.Nationalized;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,7 +22,11 @@ public class Employee {
 
     @Nationalized
     private String name;
+
+    @Column(name = "employee_skill", length = 1000)
     private Set<EmployeeSkill> skills;
+
+    @Column(name = "day_of_week", length = 255)
     private Set<DayOfWeek> daysAvailable;
 
     public Employee(long id) {

@@ -16,11 +16,15 @@ public class Customer {
 
     @Nationalized
     private String name;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "notes")
     private String notes;
     private List<Long> petIds;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.PERSIST)
     private List<Pet> pets;
 
     public Customer(long id) {
