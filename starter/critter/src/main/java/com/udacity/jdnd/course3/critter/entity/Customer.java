@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Create Entity for Customer
  */
+@Table
 @Entity
-@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue
