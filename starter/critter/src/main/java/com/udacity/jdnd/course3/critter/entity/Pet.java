@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.entity;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.pet.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
@@ -10,33 +9,29 @@ import java.time.LocalDate;
 /**
  * Create Entity for Pet
  */
+@Table
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Pet {
     @Id
     @GeneratedValue
     private long id;
 
-    @Column(name = "pet_type", length = 255)
     private PetType type;
 
-    @JsonView(Views.Public.class)
     @Nationalized
     private String name;
-    private long ownerId;
 
-    @Column(name = "birth_date", length = 255)
     private LocalDate birthDate;
-
-    @Column(name = "notes", length = 500)
     private String notes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(targetEntity = Customer.class)
     private Customer customer;
 
-    public Pet(long id) {
-        this.id = id;
+    public Pet(PetType type, String name, LocalDate birthDate, String notes) {
+        this.type = type;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.notes = notes;
     }
 
     public long getId() {
@@ -61,14 +56,6 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public LocalDate getBirthDate() {

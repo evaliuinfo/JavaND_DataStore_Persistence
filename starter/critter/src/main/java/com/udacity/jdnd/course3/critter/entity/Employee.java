@@ -1,12 +1,9 @@
 package com.udacity.jdnd.course3.critter.entity;
 
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import com.udacity.jdnd.course3.critter.user.*;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.util.Set;
 
@@ -14,6 +11,7 @@ import java.util.Set;
 /**
  * Create Entity for Employee
  */
+@Table
 @Entity
 public class Employee {
     @Id
@@ -23,10 +21,10 @@ public class Employee {
     @Nationalized
     private String name;
 
-    @Column(name = "employee_skill", length = 1000)
+    @ElementCollection
     private Set<EmployeeSkill> skills;
 
-    @Column(name = "day_of_week", length = 255)
+    @ElementCollection
     private Set<DayOfWeek> daysAvailable;
 
     public Employee(long id) {

@@ -9,6 +9,7 @@ import java.util.List;
  * Create Entity for Customer
  */
 @Entity
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue
@@ -16,19 +17,21 @@ public class Customer {
 
     @Nationalized
     private String name;
-
-    @Column(name = "phone_number")
     private String phoneNumber;
-
-    @Column(name = "notes")
     private String notes;
-    private List<Long> petIds;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.PERSIST)
+    @OneToMany(targetEntity = Pet.class, fetch = FetchType.LAZY, mappedBy = "customer")
     private List<Pet> pets;
 
-    public Customer(long id) {
+    public Customer(long id, String name, String phoneNumber, String notes) {
         this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.notes = notes;
+    }
+
+    public Customer() {
+
     }
 
     public long getId() {
@@ -61,14 +64,6 @@ public class Customer {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public List<Long> getPetIds() {
-        return petIds;
-    }
-
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
     }
 
     public List<Pet> getPets() {
