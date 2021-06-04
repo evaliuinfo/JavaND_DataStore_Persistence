@@ -1,6 +1,9 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import org.springframework.web.bind.annotation.*;
+import com.udacity.jdnd.course3.critter.entity.*;
+import com.udacity.jdnd.course3.critter.service.CustomerService;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
 
 import java.time.DayOfWeek;
 import java.util.List;
