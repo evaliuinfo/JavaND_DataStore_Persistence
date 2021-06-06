@@ -34,6 +34,9 @@ public class Pet {
         this.notes = notes;
     }
 
+    public Pet() {
+    }
+
     public long getId() {
         return id;
     }

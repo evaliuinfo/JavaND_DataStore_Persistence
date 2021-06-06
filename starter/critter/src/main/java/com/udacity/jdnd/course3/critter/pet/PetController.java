@@ -1,9 +1,10 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.udacity.jdnd.course3.critter.service.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -15,12 +16,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/pet")
 public class PetController {
-
     @Autowired
-    PetService petService;
+    private PetService petService;
+
+    public PetController() {
+    }
 
     private PetDTO convertPetToPetDTO(Pet pet) {
-        return new PetDTO(pet.getId(), pet.getName(), pet.getCustomer().getId(), pet.getBirthDate), pet.getNotes());
+        return new PetDTO(pet.getId(), pet.getType(), pet.getName(), pet.getCustomer().getId(), pet.getBirthDate(), pet.getNotes());
     }
 
     @PostMapping

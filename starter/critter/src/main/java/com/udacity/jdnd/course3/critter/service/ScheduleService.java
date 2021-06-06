@@ -1,8 +1,13 @@
 package com.udacity.jdnd.course3.critter.service;
 
-import com.udacity.jdnd.course3.critter.entity.*;
-import com.udacity.jdnd.course3.critter.repository.*;
-import com.udacity.jdnd.course3.critter.user.*;
+import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.entity.Schedule;
+import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
+import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
+import com.udacity.jdnd.course3.critter.repository.PetRepository;
+import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,16 +18,16 @@ import java.util.List;
 @Transactional
 public class ScheduleService {
     @Autowired
-    ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
 
     @Autowired
-    PetRepository petRepository;
+    private PetRepository petRepository;
 
     @Autowired
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     public Schedule saveSchedule(Schedule schedule, List<Long> employeeIds, List<Long> petIds) {
         List<Pet> pets = petRepository.findAllById(petIds);
@@ -40,19 +45,19 @@ public class ScheduleService {
 
     public List<Schedule> getEmployeeSchedule(Long employeeId) {
         Employee employee = employeeRepository.getOne(employeeId);
-        List<Schedule> schedules = scheduleRepository.findByEmployee(employee);
+        List<Schedule> schedules = scheduleRepository.findScheduleByEmployee(employee);
         return schedules;
     }
 
-    public List<Schedule> getPetSchedules(Long petId) {
+    public List<Schedule> getPetSchedule(Long petId) {
         Pet pet = petRepository.getOne(petId);
-        List<Schedule> schedules = scheduleRepository.findByPets(pet);
+        List<Schedule> schedules = scheduleRepository.findScheduleByPets(pet);
         return schedules;
     }
 
     public List<Schedule> getCustomerSchedule(Long customerId) {
         Customer customer = customerRepository.getOne(customerId);
-        List<Schedule> schedules = scheduleRepository.findByPetsIn(customer.getPets());
+        List<Schedule> schedules = scheduleRepository.findScheduleByPetsIn(customer.getPets());
         return schedules;
     }
 }

@@ -1,11 +1,13 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.service.CustomerService;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.udacity.jdnd.course3.critter.entity.*;
-import com.udacity.jdnd.course3.critter.service.*;
-import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
@@ -24,10 +26,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    CustomerService customerService;
+    private CustomerService customerService;
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     private CustomerDTO convertCustomerToCustomerDTO(Customer customer) {
         List<Long> petIds = customer.getPets().stream().map(Pet::getId).collect(Collectors.toList());

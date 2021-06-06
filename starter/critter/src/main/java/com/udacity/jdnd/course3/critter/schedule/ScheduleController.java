@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class ScheduleController {
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     private ScheduleDTO convertScheduleToScheduleDTO(Schedule schedule) {
         List<Long> employeeIds = schedule.getEmployee().stream().map(Employee::getId).collect(Collectors.toList());

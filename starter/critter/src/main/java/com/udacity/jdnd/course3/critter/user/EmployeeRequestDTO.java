@@ -11,6 +11,14 @@ public class EmployeeRequestDTO {
     private Set<EmployeeSkill> skills;
     private LocalDate date;
 
+    public EmployeeRequestDTO(Set<EmployeeSkill> skills, LocalDate date) {
+        this.skills = skills;
+        this.date = date;
+    }
+
+    public EmployeeRequestDTO() {
+    }
+
     public Set<EmployeeSkill> getSkills() {
         return skills;
     }
