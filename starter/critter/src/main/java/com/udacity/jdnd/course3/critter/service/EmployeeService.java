@@ -19,8 +19,16 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    public EmployeeService() {
+    }
+
     public Employee saveEmployee(Employee employee) {
         Employee newEmployee = employeeRepository.save(employee);
+        return newEmployee;
+    }
+
+    public Employee findById(Long employeeId) throws Exception {
+        Employee newEmployee = employeeRepository.getOne(employeeId);
         return newEmployee;
     }
 

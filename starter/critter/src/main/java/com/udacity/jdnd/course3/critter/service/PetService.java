@@ -20,6 +20,9 @@ public class PetService {
     @Autowired
     PetRepository petRepository;
 
+    public PetService() {
+    }
+
     public Pet savePet(Pet pet, Long customerId) {
         Customer customer = customerRepository.getOne(customerId);
         List<Pet> pets = new ArrayList<Pet>();

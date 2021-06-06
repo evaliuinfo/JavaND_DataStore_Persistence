@@ -29,6 +29,13 @@ public class ScheduleService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    public ScheduleService() {
+    }
+
+    public Schedule create(Schedule schedule) {
+        return scheduleRepository.save(schedule);
+    }
+
     public Schedule saveSchedule(Schedule schedule, List<Long> employeeIds, List<Long> petIds) {
         List<Pet> pets = petRepository.findAllById(petIds);
         List<Employee> employees = employeeRepository.findAllById(employeeIds);

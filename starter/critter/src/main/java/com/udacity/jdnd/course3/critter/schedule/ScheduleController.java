@@ -1,13 +1,11 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
-import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.converter.ScheduleDTOConverter;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
+import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,64 +17,54 @@ import java.util.stream.Collectors;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
-    @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
+    private final PetService petService;
+    private final ScheduleDTOConverter scheduleDTOConverter;
 
-    private ScheduleDTO convertScheduleToScheduleDTO(Schedule schedule) {
-        List<Long> employeeIds = schedule.getEmployee().stream().map(Employee::getId).collect(Collectors.toList());
-        List<Long> petIds = schedule.getPets().stream().map(Pet::getId).collect(Collectors.toList());
-
-        return new ScheduleDTO(schedule.getId(), employeeIds, petIds, schedule.getDate(), schedule.getActivities());
+    public ScheduleController(ScheduleService scheduleService,
+                              PetService petService,
+                              ScheduleDTOConverter scheduleDTOConverter) {
+        this.scheduleService = scheduleService;
+        this.petService = petService;
+        this.scheduleDTOConverter = scheduleDTOConverter;
     }
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        Schedule schedule = new Schedule(ScheduleDTO.getDate(), scheduleDTO.getActivities());
-        ScheduleDTO convertedSchedule;
-        try {
-            convertedSchedule = convertScheduleToScheduleDTO(scheduleService.saveSchedule(schedule, scheduleDTO.getEmployeeIds(), scheduleDTO.getPetIds()));
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Schedule could not be saved", exception);
-        }
-        return convertedSchedule;
+        Schedule schedule = scheduleDTOConverter.convertDTOToSchedule(scheduleDTO);
+        return scheduleDTOConverter.convertScheduleToDTO(scheduleService.create(schedule));
     }
 
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {
-        List<Schedule> schedules = scheduleService.getAllSchedules();
-        return schedules.stream().map(this::convertScheduleToScheduleDTO).collect(Collectors.toList());
+        return scheduleService.getAllSchedules()
+                .stream()
+                .map(scheduleDTOConverter::convertScheduleToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        List<Schedule> schedules;
-        try {
-            schedules = scheduleService.getPetSchedule(petId);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pet schedule with id: "+petId+ " not found", exception);
-        }
-        return schedules.stream().map(this::convertScheduleToScheduleDTO).collect(Collectors.toList());
+        Pet pet = petService.getPetById(petId);
+        return scheduleService.getPetSchedule(petId)
+                .stream()
+                .map(scheduleDTOConverter::convertScheduleToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        List<Schedule> schedules;
-        try {
-            schedules = scheduleService.getEmployeeSchedule(employeeId);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Employee with id: " + employeeId + " not found", exception);
-        }
-        return schedules.stream().map(this::convertScheduleToScheduleDTO).collect(Collectors.toList());
+        return scheduleService.getEmployeeSchedule(employeeId)
+                .stream()
+                .map(scheduleDTOConverter::convertScheduleToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        List<Schedule> schedules;
-        try {
-            schedules = scheduleService.getCustomerSchedule(customerId);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer with id: " + customerId + " not found", exception);
-        }
-        return schedules.stream().map(this::convertScheduleToScheduleDTO).collect(Collectors.toList());
+        return scheduleService.getCustomerSchedule(customerId)
+                .stream()
+                .map(scheduleDTOConverter::convertScheduleToDTO)
+                .collect(Collectors.toList());
     }
 }

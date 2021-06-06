@@ -21,6 +21,9 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    public CustomerService() {
+    }
+
     public Customer saveCustomer(Customer customer, List<Long> petIds) {
         List<Pet> customerPets = new ArrayList<Pet>();
         if (petIds != null && !petIds.isEmpty()) {

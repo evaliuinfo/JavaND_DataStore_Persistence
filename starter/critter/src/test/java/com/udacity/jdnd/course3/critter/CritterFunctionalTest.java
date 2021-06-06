@@ -53,7 +53,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testCreateEmployee(){
+    public void testCreateEmployee() throws Exception {
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO newEmployee = userController.saveEmployee(employeeDTO);
         EmployeeDTO retrievedEmployee = userController.getEmployee(newEmployee.getId());
@@ -64,7 +64,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testAddPetsToCustomer() {
+    public void testAddPetsToCustomer() throws Exception {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
@@ -107,7 +107,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testFindOwnerByPet() {
+    public void testFindOwnerByPet() throws Exception {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
@@ -121,7 +121,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testChangeEmployeeAvailability() {
+    public void testChangeEmployeeAvailability() throws Exception {
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO emp1 = userController.saveEmployee(employeeDTO);
         Assertions.assertNull(emp1.getDaysAvailable());
@@ -195,7 +195,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testFindScheduleByEntities() {
+    public void testFindScheduleByEntities() throws Exception {
         ScheduleDTO sched1 = populateSchedule(1, 2, LocalDate.of(2019, 12, 25), Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
         ScheduleDTO sched2 = populateSchedule(3, 1, LocalDate.of(2019, 12, 26), Sets.newHashSet(EmployeeSkill.PETTING));
 
@@ -242,27 +242,28 @@ public class CritterFunctionalTest {
     }
 
 
-    private static EmployeeDTO createEmployeeDTO() {
+    public static EmployeeDTO createEmployeeDTO() {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setName("TestEmployee");
         employeeDTO.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING));
         return employeeDTO;
     }
-    private static CustomerDTO createCustomerDTO() {
+
+    public static CustomerDTO createCustomerDTO() {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setName("TestEmployee");
         customerDTO.setPhoneNumber("123-456-789");
         return customerDTO;
     }
 
-    private static PetDTO createPetDTO() {
+    public static PetDTO createPetDTO() {
         PetDTO petDTO = new PetDTO();
         petDTO.setName("TestPet");
         petDTO.setType(PetType.CAT);
         return petDTO;
     }
 
-    private static EmployeeRequestDTO createEmployeeRequestDTO() {
+    public static EmployeeRequestDTO createEmployeeRequestDTO() {
         EmployeeRequestDTO employeeRequestDTO = new EmployeeRequestDTO();
         employeeRequestDTO.setDate(LocalDate.of(2019, 12, 25));
         employeeRequestDTO.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
