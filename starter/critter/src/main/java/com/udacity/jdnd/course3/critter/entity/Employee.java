@@ -5,14 +5,15 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.HashSet;
 import java.util.Set;
 
 
 /**
  * Create Entity for Employee
  */
-@Table
 @Entity
+@Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue
@@ -22,10 +23,10 @@ public class Employee {
     private String name;
 
     @ElementCollection
-    private Set<EmployeeSkill> skills;
+    private Set<EmployeeSkill> skills = new HashSet<>();
 
     @ElementCollection
-    private Set<DayOfWeek> daysAvailable;
+    private Set<DayOfWeek> daysAvailable = new HashSet<>();
 
     public Employee(Long id, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
         this.id = id;

@@ -1,7 +1,10 @@
 package com.udacity.jdnd.course3.critter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.udacity.jdnd.course3.critter.pet.PetType;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,8 +12,8 @@ import java.time.LocalDate;
 /**
  * Create Entity for Pet
  */
-@Table
 @Entity
+@Table(name = "pet")
 public class Pet {
     @Id
     @GeneratedValue
@@ -24,7 +27,9 @@ public class Pet {
     private LocalDate birthDate;
     private String notes;
 
-    @ManyToOne(targetEntity = Customer.class)
+    @JsonIgnore
+    @ManyToOne(optional = true)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Customer customer;
 
     public Pet(PetType type, String name, LocalDate birthDate, String notes) {

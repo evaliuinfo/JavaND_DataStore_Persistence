@@ -3,13 +3,14 @@ package com.udacity.jdnd.course3.critter.entity;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Create Entity for Customer
  */
-@Table
 @Entity
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue
@@ -20,8 +21,8 @@ public class Customer {
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(targetEntity = Pet.class, fetch = FetchType.LAZY, mappedBy = "customer")
-    private List<Pet> pets;
+    @OneToMany(targetEntity = Pet.class, mappedBy = "customer")
+    private List<Pet> pets = new LinkedList<>();
 
     public Customer(long id, String name, String phoneNumber, String notes) {
         this.id = id;

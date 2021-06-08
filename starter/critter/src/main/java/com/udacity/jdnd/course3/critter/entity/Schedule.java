@@ -3,26 +3,34 @@ package com.udacity.jdnd.course3.critter.entity;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-@Table
 @Entity
+@Table(name = "schedule")
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private LocalDate date;
 
     @ManyToMany(targetEntity = Employee.class)
-    private List<Employee> employee;
+    @JoinTable(name = "schedule_employee",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private List<Employee> employee = new LinkedList<>();
 
     @ManyToMany(targetEntity = Pet.class)
-    private List<Pet> pets;
+    @JoinTable(name = "schedule_pet",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "pet_id"))
+    private List<Pet> pets = new LinkedList<>();
 
     @ElementCollection
-    private Set<EmployeeSkill> activities;
+    private Set<EmployeeSkill> activities = new HashSet<>();
 
     public Schedule(LocalDate date, Set<EmployeeSkill> activities) {
         this.date = date;
