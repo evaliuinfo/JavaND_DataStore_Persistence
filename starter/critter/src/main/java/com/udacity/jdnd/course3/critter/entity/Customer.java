@@ -13,14 +13,18 @@ import java.util.List;
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
     private String name;
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(targetEntity = Pet.class)
+    @OneToMany(mappedBy = "owner")
     private List<Pet> pets = new LinkedList<>();
+
+    public void addPet(Pet pet){
+        pets.add(pet);
+    }
 
     public Customer(long id, String name, String phoneNumber, String notes) {
         this.id = id;
