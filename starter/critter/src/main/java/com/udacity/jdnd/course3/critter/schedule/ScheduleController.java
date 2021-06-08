@@ -6,6 +6,7 @@ import com.udacity.jdnd.course3.critter.entity.Schedule;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
@@ -40,12 +41,14 @@ public class ScheduleController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Creates a schedule object")
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleDTOConverter.convertDTOToSchedule(scheduleDTO);
         return scheduleDTOConverter.convertScheduleToDTO(scheduleService.create(schedule));
     }
 
     @GetMapping
+    @ApiOperation(value = "Returns list of schedule objects")
     public List<ScheduleDTO> getAllSchedules() {
         return scheduleService.getAllSchedules()
                 .stream()
@@ -54,6 +57,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/pet/{petId}")
+    @ApiOperation(value = "Returns a list of all schedules for a pet given the pet id")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
         Pet pet = petService.getPetById(petId);
         return scheduleService.getPetSchedule(petId)
@@ -63,6 +67,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/employee/{employeeId}")
+    @ApiOperation(value = "Returns a list of all schedules for an employee given the employee id")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
         return scheduleService.getEmployeeSchedule(employeeId)
                 .stream()
@@ -71,6 +76,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/customer/{customerId}")
+    @ApiOperation(value = "Returns a list of all schedules for a customer given the customer id")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
         return scheduleService.getCustomerSchedule(customerId)
                 .stream()

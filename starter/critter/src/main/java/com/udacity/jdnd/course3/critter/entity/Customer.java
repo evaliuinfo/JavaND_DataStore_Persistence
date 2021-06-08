@@ -13,15 +13,13 @@ import java.util.List;
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Nationalized
     private String name;
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(targetEntity = Pet.class, mappedBy = "customer")
+    @OneToMany(targetEntity = Pet.class)
     private List<Pet> pets = new LinkedList<>();
 
     public Customer(long id, String name, String phoneNumber, String notes) {

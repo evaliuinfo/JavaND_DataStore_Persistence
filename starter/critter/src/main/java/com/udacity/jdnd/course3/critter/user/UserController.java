@@ -52,43 +52,49 @@ public class UserController {
     }
 
     @PostMapping("/customer")
+    @ApiOperation(value = "Creates a customer object")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         Customer customer = customerDTOConverter.convertDTOToCustomer(customerDTO);
-        List<Long> petIds = customerDTO.getPetIds();
-        return customerDTOConverter.convertCustomerToDTO(customerService.saveCustomer(customer, petIds));
+        return customerDTOConverter.convertCustomerToDTO(customerService.save(customer));
     }
 
     @GetMapping("/customer")
+    @ApiOperation(value = "Returns a list of all customers")
     public List<CustomerDTO> getAllCustomers(){
-        return customerService.getAllCustomers()
+        return customerService.list()
                 .stream()
                 .map(customerDTOConverter::convertCustomerToDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/customer/pet/{petId}")
+    @ApiOperation(value = "Finds a customer that owns a particular pet given the pet id")
     public CustomerDTO getOwnerByPet(@PathVariable long petId) throws Exception {
-        Customer customer = customerService.getCustomerByPetId(petId);
+        Customer customer = customerService.findById(petId);
         return customerDTOConverter.convertCustomerToDTO(customer);
     }
 
     @PostMapping("/employee")
+    @ApiOperation(value = "Creates an employee object")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = employeeDTOConverter.convertDTOToEmployee(employeeDTO);
         return employeeDTOConverter.convertEmployeeToDTO(employeeService.saveEmployee(employee));
     }
 
     @PostMapping("/employee/{employeeId}")
+    @ApiOperation(value = "Finds an employee given the employee id")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) throws Exception {
         return employeeDTOConverter.convertEmployeeToDTO(employeeService.findById(employeeId));
     }
 
     @PutMapping("/employee/{employeeId}")
+    @ApiOperation(value = "Sets the days of the week that an employee is available")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
         employeeService.setEmployeeAvailability(daysAvailable, employeeId);
     }
 
     @GetMapping("/employee/availability")
+    @ApiOperation(value = "Returns a list of employees who are available in a particular day")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
         LocalDate localDate = employeeDTO.getDate();
         HashSet<EmployeeSkill> skills = new HashSet<>(employeeDTO.getSkills());

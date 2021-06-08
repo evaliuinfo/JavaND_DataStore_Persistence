@@ -28,8 +28,7 @@ public class Pet {
     private String notes;
 
     @JsonIgnore
-    @ManyToOne(optional = true)
-    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne
     private Customer customer;
 
     public Pet(PetType type, String name, LocalDate birthDate, String notes) {

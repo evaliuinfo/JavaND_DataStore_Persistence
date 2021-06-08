@@ -6,6 +6,7 @@ import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
@@ -38,20 +39,23 @@ public class PetController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Creates a pet object")
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        Customer customer = customerService.getCustomerByPetId(petDTO.getId());
+        Customer customer = customerService.findById(petDTO.getId());
         Pet newPet = petDTOConverter.convertDTOToPet(petDTO);
         newPet.setCustomer(customer);
         return petDTOConverter.convertPetToDTO(petService.savePet(newPet, customer.getId()));
     }
 
     @GetMapping("/{petId}")
+    @ApiOperation(value = "Finds a pet object given its id")
     public PetDTO getPet(@PathVariable long petId) throws Exception{
         Pet pet = petService.getPetById(petId);
         return petDTOConverter.convertPetToDTO(pet);
     }
 
     @GetMapping
+    @ApiOperation(value = "Returns a list of all pets ")
     public List<PetDTO> getPets(){
         return petService.getAllPets()
                 .stream()
@@ -60,6 +64,7 @@ public class PetController {
     }
 
     @GetMapping("/owner/{ownerId}")
+    @ApiOperation(value = "Returns a list of all pets belonging to an owner given the owner id")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
         return petService.getPetsByCustomerId(ownerId)
                 .stream()
