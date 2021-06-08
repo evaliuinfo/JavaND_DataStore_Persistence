@@ -1,8 +1,12 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
 import com.udacity.jdnd.course3.critter.converter.ScheduleDTOConverter;
+import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
+import com.udacity.jdnd.course3.critter.service.CustomerService;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
 import io.swagger.annotations.Api;
@@ -29,13 +33,19 @@ import java.util.stream.Collectors;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+    private final EmployeeService employeeService;
+    private final CustomerService customerService;
     private final PetService petService;
     private final ScheduleDTOConverter scheduleDTOConverter;
 
     public ScheduleController(ScheduleService scheduleService,
+                              EmployeeService employeeService,
+                              CustomerService customerService,
                               PetService petService,
                               ScheduleDTOConverter scheduleDTOConverter) {
         this.scheduleService = scheduleService;
+        this.employeeService = employeeService;
+        this.customerService = customerService;
         this.petService = petService;
         this.scheduleDTOConverter = scheduleDTOConverter;
     }
@@ -50,7 +60,7 @@ public class ScheduleController {
     @GetMapping
     @ApiOperation(value = "Returns list of schedule objects")
     public List<ScheduleDTO> getAllSchedules() {
-        return scheduleService.getAllSchedules()
+        return scheduleService.list()
                 .stream()
                 .map(scheduleDTOConverter::convertScheduleToDTO)
                 .collect(Collectors.toList());
@@ -58,9 +68,9 @@ public class ScheduleController {
 
     @GetMapping("/pet/{petId}")
     @ApiOperation(value = "Returns a list of all schedules for a pet given the pet id")
-    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        Pet pet = petService.getPetById(petId);
-        return scheduleService.getPetSchedule(petId)
+    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) throws Exception {
+        Pet pet = petService.findById(petId);
+        return scheduleService.findScheduleByPet(pet)
                 .stream()
                 .map(scheduleDTOConverter::convertScheduleToDTO)
                 .collect(Collectors.toList());
@@ -68,8 +78,9 @@ public class ScheduleController {
 
     @GetMapping("/employee/{employeeId}")
     @ApiOperation(value = "Returns a list of all schedules for an employee given the employee id")
-    public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        return scheduleService.getEmployeeSchedule(employeeId)
+    public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) throws Exception {
+        Employee employee = employeeService.findById(employeeId);
+        return scheduleService.findScheduleByEmployee(employee)
                 .stream()
                 .map(scheduleDTOConverter::convertScheduleToDTO)
                 .collect(Collectors.toList());
@@ -78,7 +89,8 @@ public class ScheduleController {
     @GetMapping("/customer/{customerId}")
     @ApiOperation(value = "Returns a list of all schedules for a customer given the customer id")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        return scheduleService.getCustomerSchedule(customerId)
+        Customer customer = customerService.findById(customerId);
+        return scheduleService.findScheduleByCustomer(customer)
                 .stream()
                 .map(scheduleDTOConverter::convertScheduleToDTO)
                 .collect(Collectors.toList());

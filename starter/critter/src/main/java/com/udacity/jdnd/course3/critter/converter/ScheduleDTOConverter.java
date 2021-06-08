@@ -61,7 +61,7 @@ public class ScheduleDTOConverter {
         if (petIds != null) {
             petIds.forEach(petId -> {
                 try {
-                    pets.add(petService.getPetById(petId));
+                    pets.add(petService.findById(petId));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

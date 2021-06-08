@@ -10,10 +10,8 @@ import java.util.List;
 @Service
 @Transactional
 public interface CustomerService {
-
     List<Customer> list();
     Customer save(Customer customer);
     Customer findOwnerByPet(Pet pet) throws Exception;
     Customer findById(Long id);
-
 }

@@ -44,20 +44,20 @@ public class PetController {
         Customer customer = customerService.findById(petDTO.getId());
         Pet newPet = petDTOConverter.convertDTOToPet(petDTO);
         newPet.setCustomer(customer);
-        return petDTOConverter.convertPetToDTO(petService.savePet(newPet, customer.getId()));
+        return petDTOConverter.convertPetToDTO(petService.save(newPet));
     }
 
     @GetMapping("/{petId}")
     @ApiOperation(value = "Finds a pet object given its id")
     public PetDTO getPet(@PathVariable long petId) throws Exception{
-        Pet pet = petService.getPetById(petId);
+        Pet pet = petService.findById(petId);
         return petDTOConverter.convertPetToDTO(pet);
     }
 
     @GetMapping
     @ApiOperation(value = "Returns a list of all pets ")
     public List<PetDTO> getPets(){
-        return petService.getAllPets()
+        return petService.list()
                 .stream()
                 .map(petDTOConverter::convertPetToDTO)
                 .collect(Collectors.toList());
@@ -66,7 +66,7 @@ public class PetController {
     @GetMapping("/owner/{ownerId}")
     @ApiOperation(value = "Returns a list of all pets belonging to an owner given the owner id")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        return petService.getPetsByCustomerId(ownerId)
+        return petService.findByOwnerId(ownerId)
                 .stream()
                 .map(petDTOConverter::convertPetToDTO)
                 .collect(Collectors.toList());

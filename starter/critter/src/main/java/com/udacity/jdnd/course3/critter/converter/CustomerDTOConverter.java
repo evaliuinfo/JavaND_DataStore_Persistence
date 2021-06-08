@@ -36,7 +36,7 @@ public class CustomerDTOConverter {
 
         List<Long> petIds = customerDTO.getPetIds();
         if (petIds != null) {
-            List<Pet> pets = petService.getAllPets();
+            List<Pet> pets = petService.list();
             customer.setPets(pets);
         }
         return customer;

@@ -16,55 +16,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ScheduleService {
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
-    private PetRepository petRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
-    public ScheduleService() {
-    }
-
-    public Schedule create(Schedule schedule) {
-        return scheduleRepository.save(schedule);
-    }
-
-    public Schedule saveSchedule(Schedule schedule, List<Long> employeeIds, List<Long> petIds) {
-        List<Pet> pets = petRepository.findAllById(petIds);
-        List<Employee> employees = employeeRepository.findAllById(employeeIds);
-        schedule.setPets(pets);
-        schedule.setEmployee(employees);
-
-        return scheduleRepository.save(schedule);
-    }
-
-    public List<Schedule> getAllSchedules() {
-        List<Schedule> allSchedules = scheduleRepository.findAll();
-        return allSchedules;
-    }
-
-    public List<Schedule> getEmployeeSchedule(Long employeeId) {
-        Employee employee = employeeRepository.getOne(employeeId);
-        List<Schedule> schedules = scheduleRepository.findScheduleByEmployee(employee);
-        return schedules;
-    }
-
-    public List<Schedule> getPetSchedule(Long petId) {
-        Pet pet = petRepository.getOne(petId);
-        List<Schedule> schedules = scheduleRepository.findScheduleByPets(pet);
-        return schedules;
-    }
-
-    public List<Schedule> getCustomerSchedule(Long customerId) {
-        Customer customer = customerRepository.getOne(customerId);
-        List<Schedule> schedules = scheduleRepository.findScheduleByPetsIn(customer.getPets());
-        return schedules;
-    }
+public interface ScheduleService {
+    Schedule create(Schedule schedule);
+    List<Schedule> list();
+    List<Schedule> findScheduleByPet(Pet pet);
+    List<Schedule> findScheduleByEmployee(Employee employee);
+    List<Schedule> findScheduleByCustomer(Customer customer);
 }

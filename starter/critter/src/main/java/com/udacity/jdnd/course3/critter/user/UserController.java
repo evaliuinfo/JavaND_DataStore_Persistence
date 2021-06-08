@@ -78,7 +78,7 @@ public class UserController {
     @ApiOperation(value = "Creates an employee object")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = employeeDTOConverter.convertDTOToEmployee(employeeDTO);
-        return employeeDTOConverter.convertEmployeeToDTO(employeeService.saveEmployee(employee));
+        return employeeDTOConverter.convertEmployeeToDTO(employeeService.save(employee));
     }
 
     @PostMapping("/employee/{employeeId}")
@@ -89,8 +89,8 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     @ApiOperation(value = "Sets the days of the week that an employee is available")
-    public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        employeeService.setEmployeeAvailability(daysAvailable, employeeId);
+    public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) throws Exception {
+        employeeService.setAvailability(daysAvailable, employeeId);
     }
 
     @GetMapping("/employee/availability")
@@ -99,7 +99,7 @@ public class UserController {
         LocalDate localDate = employeeDTO.getDate();
         HashSet<EmployeeSkill> skills = new HashSet<>(employeeDTO.getSkills());
 
-        return employeeService.getEmployeesByService(localDate, skills)
+        return employeeService.findEmployeesForService(localDate, skills)
                 .stream()
                 .map(employeeDTOConverter::convertEmployeeToDTO)
                 .collect(Collectors.toList());
