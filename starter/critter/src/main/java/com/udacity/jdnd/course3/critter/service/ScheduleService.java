@@ -20,7 +20,7 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    public Schedule create(Schedule schedule) {
+    public Schedule save(Schedule schedule) {
         return scheduleRepository.save(schedule);
     }
 

@@ -54,7 +54,7 @@ public class ScheduleController {
     @ApiOperation(value = "Creates a schedule object")
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleDTOConverter.convertDTOToSchedule(scheduleDTO);
-        return scheduleDTOConverter.convertScheduleToDTO(scheduleService.create(schedule));
+        return scheduleDTOConverter.convertScheduleToDTO(scheduleService.save(schedule));
     }
 
     @GetMapping
