@@ -17,17 +17,17 @@ public class Schedule {
 
     private LocalDate date;
 
-    @ManyToMany(targetEntity = Employee.class)
+    @ManyToMany
     @JoinTable(name = "schedule_employee",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    private List<Employee> employee = new LinkedList<>();
+    private List<Employee> employee;
 
-    @ManyToMany(targetEntity = Pet.class)
+    @ManyToMany
     @JoinTable(name = "schedule_pet",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "pet_id"))
-    private List<Pet> pets = new LinkedList<>();
+    private List<Pet> pets;
 
     @ElementCollection
     private Set<EmployeeSkill> activities = new HashSet<>();
@@ -38,7 +38,6 @@ public class Schedule {
     }
 
     public Schedule() {
-
     }
 
     public void setId(long id) {

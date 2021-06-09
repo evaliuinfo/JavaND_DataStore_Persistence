@@ -44,7 +44,7 @@ public class PetController {
         Customer customer = customerService.findById(petDTO.getId());
         Pet newPet = petDTOConverter.convertDTOToPet(petDTO);
         newPet.setCustomer(customer);
-        return petDTOConverter.convertPetToDTO(petService.save(newPet));
+        return petDTOConverter.convertPetToDTO(petService.save(newPet, customer.getId()));
     }
 
     @GetMapping("/{petId}")

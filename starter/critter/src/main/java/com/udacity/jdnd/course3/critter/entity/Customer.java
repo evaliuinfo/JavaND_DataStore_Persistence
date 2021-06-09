@@ -1,9 +1,6 @@
 package com.udacity.jdnd.course3.critter.entity;
 
-import org.hibernate.annotations.Nationalized;
-
 import javax.persistence.*;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,10 +16,10 @@ public class Customer {
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Pet> pets = new LinkedList<>();
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Pet> pets;
 
-    public void addPet(Pet pet){
+    public void addPet(Pet pet) {
         pets.add(pet);
     }
 
