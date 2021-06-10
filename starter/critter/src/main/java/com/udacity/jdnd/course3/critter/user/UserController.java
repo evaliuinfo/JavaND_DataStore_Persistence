@@ -4,8 +4,11 @@ import com.udacity.jdnd.course3.critter.converter.CustomerDTOConverter;
 import com.udacity.jdnd.course3.critter.converter.EmployeeDTOConverter;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.EmployeeService;
+import org.checkerframework.checker.units.qual.C;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +57,8 @@ public class UserController {
     @PostMapping("/customer")
     @ApiOperation(value = "Creates a customer object")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        Customer customer = customerDTOConverter.convertDTOToCustomer(customerDTO);
+        Customer customer = new Customer();
+        customer = customerDTOConverter.convertDTOToCustomer(customerDTO);
         return customerDTOConverter.convertCustomerToDTO(customerService.save(customer));
     }
 
@@ -70,7 +74,8 @@ public class UserController {
     @GetMapping("/customer/pet/{petId}")
     @ApiOperation(value = "Finds a customer that owns a particular pet given the pet id")
     public CustomerDTO getOwnerByPet(@PathVariable long petId) throws Exception {
-        Customer customer = customerService.findById(petId);
+        Customer customer = new Customer();
+        customer = customerService.findCustomerByPetId(petId);
         return customerDTOConverter.convertCustomerToDTO(customer);
     }
 

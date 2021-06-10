@@ -36,14 +36,19 @@ public class ScheduleService {
         return scheduleRepository.findScheduleByEmployee(employee);
     }
 
-    public List<Schedule> findScheduleByCustomer(Customer customer) {
-        List<Pet> pets = customer.getPets();
-        List<Schedule> schedules = new LinkedList<>();
+    //public List<Schedule> findScheduleByCustomer(Customer customer) {
+    //    List<Pet> pets = customer.getPets();
+    //    List<Schedule> schedules = new LinkedList<>();
 
-        pets.forEach(pet -> {
-            List<Schedule> petsOnSchedule = scheduleRepository.findScheduleByPets(pet);
-            schedules.addAll(petsOnSchedule);
-        });
+    //    pets.forEach(pet -> {
+    //        List<Schedule> petsOnSchedule = scheduleRepository.findScheduleByPets(pet);
+    //        schedules.addAll(petsOnSchedule);
+    //    });
+    //    return schedules;
+    //}
+
+    public List<Schedule> findScheduleByCustomer(Customer customer) {
+        List<Schedule> schedules = scheduleRepository.findScheduleByPetsIn(customer.getPets());
         return schedules;
     }
 }

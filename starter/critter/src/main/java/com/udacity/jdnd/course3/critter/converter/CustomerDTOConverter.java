@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerDTOConverter {
@@ -21,12 +22,6 @@ public class CustomerDTOConverter {
     public CustomerDTO convertCustomerToDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
-
-        List<Long> petIds = new ArrayList<>();
-        if (customer.getPets() != null) {
-            customer.getPets().forEach(pet -> petIds.add(pet.getId()));
-        }
-        customerDTO.setPetIds(petIds);
         return customerDTO;
     }
 

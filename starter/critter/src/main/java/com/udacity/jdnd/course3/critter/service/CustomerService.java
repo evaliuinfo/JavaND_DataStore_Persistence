@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.service;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
+import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +13,11 @@ import java.util.List;
 @Transactional
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final PetRepository petRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, PetRepository petRepository) {
         this.customerRepository = customerRepository;
+        this.petRepository = petRepository;
     }
 
     public List<Customer> list() {
@@ -29,7 +32,12 @@ public class CustomerService {
         return customerRepository.findCustomerByPets(pet);
     }
 
-    public Customer findById(Long id) {
+    public Customer findByCustomerId(Long id) {
         return customerRepository.getOne(id);
+    }
+
+    public Customer findCustomerByPetId(Long petId) {
+        Customer customer = petRepository.getOne(petId).getCustomer();
+        return customer;
     }
 }

@@ -1,27 +1,27 @@
 package com.udacity.jdnd.course3.critter.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.util.List;
 
 /**
  * Create Entity for Customer
  */
+@Proxy(lazy=false)
 @Entity
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String name;
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer")
     private List<Pet> pets;
-
-    public void addPet(Pet pet) {
-        pets.add(pet);
-    }
 
     public Customer(long id, String name, String phoneNumber, String notes) {
         this.id = id;

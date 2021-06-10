@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.entity;
 
 import com.udacity.jdnd.course3.critter.user.*;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -12,11 +13,12 @@ import java.util.Set;
 /**
  * Create Entity for Employee
  */
+@Proxy(lazy=false)
 @Entity
 @Table(name = "employee")
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Nationalized

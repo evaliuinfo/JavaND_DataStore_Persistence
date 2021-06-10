@@ -11,7 +11,7 @@ import java.util.Set;
  * to the database directly.
  */
 public class ScheduleDTO {
-    private static LocalDate date;
+    private LocalDate date;
     private long id;
     private List<Long> employeeIds;
     private List<Long> petIds;
@@ -44,7 +44,7 @@ public class ScheduleDTO {
         this.petIds = petIds;
     }
 
-    public static LocalDate getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

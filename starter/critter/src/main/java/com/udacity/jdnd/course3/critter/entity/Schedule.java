@@ -1,13 +1,18 @@
 package com.udacity.jdnd.course3.critter.entity;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Create Entity for Schedule
+ */
+@Proxy(lazy=false)
 @Entity
 @Table(name = "schedule")
 public class Schedule {

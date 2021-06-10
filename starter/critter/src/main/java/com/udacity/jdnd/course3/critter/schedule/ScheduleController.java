@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -89,10 +90,10 @@ public class ScheduleController {
     @GetMapping("/customer/{customerId}")
     @ApiOperation(value = "Returns a list of all schedules for a customer given the customer id")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        Customer customer = customerService.findById(customerId);
-        return scheduleService.findScheduleByCustomer(customer)
-                .stream()
-                .map(scheduleDTOConverter::convertScheduleToDTO)
-                .collect(Collectors.toList());
+        Customer customer = new Customer();
+        customer = customerService.findByCustomerId(customerId);
+        List<Schedule> schedules;
+        schedules = scheduleService.findScheduleByCustomer(customer);
+        return schedules.stream().map(scheduleDTOConverter::convertScheduleToDTO).collect(Collectors.toList());
     }
 }

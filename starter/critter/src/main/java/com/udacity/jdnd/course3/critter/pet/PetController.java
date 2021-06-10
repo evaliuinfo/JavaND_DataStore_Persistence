@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.udacity.jdnd.course3.critter.converter.PetDTOConverter;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import io.swagger.annotations.Api;
@@ -31,22 +32,34 @@ public class PetController {
     private final PetService petService;
     private final CustomerService customerService;
     private final PetDTOConverter petDTOConverter;
+    private final CustomerRepository customerRepository;
 
-    public PetController(PetService petService, CustomerService customerService, PetDTOConverter petDTOConverter) {
+    public PetController(PetService petService, CustomerService customerService, PetDTOConverter petDTOConverter, CustomerRepository customerRepository) {
         this.petService = petService;
         this.customerService = customerService;
         this.petDTOConverter = petDTOConverter;
+        this.customerRepository = customerRepository;
     }
+
+    //@PostMapping
+    //@ApiOperation(value = "Creates a pet object")
+    //public PetDTO savePet(@RequestBody PetDTO petDTO) {
+    //    Customer customer = customerService.findCustomerByPetId(petDTO.getId());
+    //    Pet newPet = petDTOConverter.convertDTOToPet(petDTO);
+    //    newPet.setCustomer(customer);
+    //    return petDTOConverter.convertPetToDTO(petService.save(newPet));
+    //}
 
     @PostMapping
     @ApiOperation(value = "Creates a pet object")
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        Customer customer = customerService.findById(petDTO.getId());
-        Pet newPet = petDTOConverter.convertDTOToPet(petDTO);
-        newPet.setCustomer(customer);
-        return petDTOConverter.convertPetToDTO(petService.save(newPet));
-    }
+        Pet pet = new Pet(petDTO.getType(), petDTO.getName(), petDTO.getBirthDate(), petDTO.getNotes());
 
+        Customer customer = customerRepository.getOne(petDTO.getOwnerId());
+        pet.setCustomer(customer);
+        pet = petService.savePet(pet, petDTO.getOwnerId());
+        return petDTOConverter.convertPetToDTO(pet);
+    }
     @GetMapping("/{petId}")
     @ApiOperation(value = "Finds a pet object given its id")
     public PetDTO getPet(@PathVariable long petId) throws Exception{

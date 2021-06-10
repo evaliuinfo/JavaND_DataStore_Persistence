@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,9 +36,9 @@ public class EmployeeService {
         employee.setDaysAvailable(availability);
     }
 
-    public Set<Employee> findEmployeesForService(LocalDate localDate, HashSet<EmployeeSkill> skills){
-        Set<Employee> employeesWithSkills = new HashSet<>();
-        Set<Employee> availableEmployees= (Set<Employee>) employeeRepository.findEmployeeByDaysAvailable(localDate.getDayOfWeek());
+    public List<Employee> findEmployeesForService(LocalDate localDate, HashSet<EmployeeSkill> skills){
+        List<Employee> employeesWithSkills = new ArrayList<>();
+        List<Employee> availableEmployees = employeeRepository.findEmployeeByDaysAvailable(localDate.getDayOfWeek());
         availableEmployees.forEach(employee -> {
             boolean matchedSkillSet = employee.getSkills().containsAll(skills);
             if (matchedSkillSet) {

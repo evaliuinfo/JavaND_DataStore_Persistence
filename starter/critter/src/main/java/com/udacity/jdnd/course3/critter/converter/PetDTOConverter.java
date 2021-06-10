@@ -7,12 +7,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PetDTOConverter {
-    public PetDTO convertPetToDTO(Pet pet) {
-        PetDTO petDTO = new PetDTO();
-        BeanUtils.copyProperties(pet, petDTO);
-        petDTO.setOwnerId(pet.getCustomer().getId());
+    //public PetDTO convertPetToDTO(Pet pet) {
+    //    PetDTO petDTO = new PetDTO();
+    //    BeanUtils.copyProperties(pet, petDTO);
+    //    petDTO.setOwnerId(pet.getCustomer().getId());
+    //    return petDTO;
+    //}
 
-        return petDTO;
+    public PetDTO convertPetToDTO(Pet pet) {
+        return new PetDTO(pet.getId(), pet.getType(), pet.getName(), pet.getCustomer().getId(), pet.getBirthDate(), pet.getNotes());
     }
 
     public Pet convertDTOToPet(PetDTO petDTO) {
