@@ -7,7 +7,9 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,12 +26,13 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Customer save(Customer customer) {
+    public Customer saveCustomer(Customer customer, List<Long> petIds) {
+        List<Pet> customerPets = new ArrayList<>();
+        if (petIds != null && !petIds.isEmpty()) {
+            customerPets = petIds.stream().map((petId) -> petRepository.getOne(petId)).collect(Collectors.toList());
+        }
+        customer.setPets(customerPets);
         return customerRepository.save(customer);
-    }
-
-    public Customer findOwnerByPet(Pet pet) throws Exception {
-        return customerRepository.findCustomerByPets(pet);
     }
 
     public Customer findByCustomerId(Long id) {

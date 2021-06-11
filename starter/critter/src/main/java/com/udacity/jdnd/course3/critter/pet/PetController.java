@@ -41,15 +41,6 @@ public class PetController {
         this.customerRepository = customerRepository;
     }
 
-    //@PostMapping
-    //@ApiOperation(value = "Creates a pet object")
-    //public PetDTO savePet(@RequestBody PetDTO petDTO) {
-    //    Customer customer = customerService.findCustomerByPetId(petDTO.getId());
-    //    Pet newPet = petDTOConverter.convertDTOToPet(petDTO);
-    //    newPet.setCustomer(customer);
-    //    return petDTOConverter.convertPetToDTO(petService.save(newPet));
-    //}
-
     @PostMapping
     @ApiOperation(value = "Creates a pet object")
     public PetDTO savePet(@RequestBody PetDTO petDTO) {

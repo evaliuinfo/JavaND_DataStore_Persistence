@@ -26,11 +26,6 @@ public class PetService {
         return petRepository.findAll();
     }
 
-    public Pet save(Pet pet) {
-        pet = petRepository.save(pet);
-        return pet;
-    }
-
     public Pet savePet(Pet pet, Long customerId) {
         Customer customer = customerRepository.getOne(customerId);
         List<Pet> pets = new ArrayList<>();
@@ -40,15 +35,16 @@ public class PetService {
         pets.add(pet);
         customer.setPets(pets);
         customerRepository.save(customer);
-
         return pet;
     }
 
-    public Pet findById(Long id) throws Exception {
-        return petRepository.findById(id).orElseThrow(()-> new Exception("Pet with ID "+id+ " not found"));
+    public Pet findById(Long id) {
+        Pet pet = petRepository.getOne(id);
+        return pet;
     }
 
     public List<Pet> findByOwnerId(Long ownerId) {
-        return petRepository.findPetByCustomerId(ownerId);
+        List<Pet> pets = petRepository.findPetByCustomerId(ownerId);
+        return pets;
     }
 }

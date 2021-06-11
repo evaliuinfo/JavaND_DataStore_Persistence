@@ -8,7 +8,6 @@ import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -35,17 +34,6 @@ public class ScheduleService {
     public List<Schedule> findScheduleByEmployee(Employee employee) {
         return scheduleRepository.findScheduleByEmployee(employee);
     }
-
-    //public List<Schedule> findScheduleByCustomer(Customer customer) {
-    //    List<Pet> pets = customer.getPets();
-    //    List<Schedule> schedules = new LinkedList<>();
-
-    //    pets.forEach(pet -> {
-    //        List<Schedule> petsOnSchedule = scheduleRepository.findScheduleByPets(pet);
-    //        schedules.addAll(petsOnSchedule);
-    //    });
-    //    return schedules;
-    //}
 
     public List<Schedule> findScheduleByCustomer(Customer customer) {
         List<Schedule> schedules = scheduleRepository.findScheduleByPetsIn(customer.getPets());

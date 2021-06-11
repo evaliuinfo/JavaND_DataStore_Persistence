@@ -20,8 +20,8 @@ public class CustomerDTOConverter {
     }
 
     public CustomerDTO convertCustomerToDTO(Customer customer) {
-        CustomerDTO customerDTO = new CustomerDTO();
-        BeanUtils.copyProperties(customer, customerDTO);
+        List<Long> petIds = customer.getPets().stream().map(Pet::getId).collect(Collectors.toList());
+        CustomerDTO customerDTO = new CustomerDTO(customer.getId(), customer.getName(), customer.getPhoneNumber(), customer.getNotes(), petIds);
         return customerDTO;
     }
 
